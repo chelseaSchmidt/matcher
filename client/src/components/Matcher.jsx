@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Matcher';
+import axios from 'axios';
 
 export default class Matcher extends React.Component {
   constructor(props) {
@@ -13,10 +14,23 @@ export default class Matcher extends React.Component {
   }
 
   handleFileSubmit() {
-    const bankFile = document.getElementById('bank-upload').files[0];
-    const bookFile = document.getElementById('book-upload').files[0];
+    const bankFile = document.getElementById('bank-upload').files.item(0);
+    const bookFile = document.getElementById('book-upload').files.item(0);
     if (!bankFile || !bookFile) {
       alert('Please submit both a bank and book file');
+    } else {
+      const formData = new FormData();
+      formData.append('sourceFiles', bankFile);
+      formData.append('sourceFiles', bookFile);
+      axios({
+          method: 'post',
+          url: '/files',
+          data: formData,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }
 
@@ -36,6 +50,7 @@ export default class Matcher extends React.Component {
       stateCopy.bookFile = bookFile.name;
     }
     this.setState(stateCopy);
+
   }
 
   render() {

@@ -2,13 +2,14 @@ import React from 'react';
 import Uploader from './Uploader';
 import Switcher from './Switcher';
 import List from './List';
+import Reconciliation from './Reconciliation';
 
 export default class Matcher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'home',
-    }
+    };
     this.handleViewSwitch = this.handleViewSwitch.bind(this);
   }
 
@@ -26,12 +27,12 @@ export default class Matcher extends React.Component {
         <div>
           <p>Welcome to Matcher</p>
           <Switcher
-            view={'uploader'}
+            view="uploader"
             text="Start a New Reconciliation"
             handleViewSwitch={this.handleViewSwitch}
           />
           <Switcher
-            view={'list'}
+            view="list"
             text="See All Reconciliations"
             handleViewSwitch={this.handleViewSwitch}
           />
@@ -46,6 +47,10 @@ export default class Matcher extends React.Component {
         <List handleViewSwitch={this.handleViewSwitch} />
       );
     }
-
+    if (view === 'reconciliation') {
+      return (
+        <Reconciliation />
+      );
+    }
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { func } from 'prop-types';
 import axios from 'axios';
 import '../styles/Uploader.css';
 import FileInput from './FileInput';
@@ -8,8 +9,8 @@ export default class Uploader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bankFile: { name: null },
-      bookFile: { name: null },
+      bankFile: { name: '' },
+      bookFile: { name: '' },
       begBook: 0,
       endBook: 0,
       begBank: 0,
@@ -88,12 +89,12 @@ export default class Uploader extends React.Component {
     return (
       <div>
         <Switcher
-          view={'list'}
+          view="list"
           text="See All Reconciliations"
           handleViewSwitch={this.handleViewSwitch}
         />
         <Switcher
-          view={'home'}
+          view="home"
           text="Back to Matcher Home"
           handleViewSwitch={this.handleViewSwitch}
         />
@@ -130,3 +131,7 @@ export default class Uploader extends React.Component {
     );
   }
 }
+
+Uploader.propTypes = {
+  handleViewSwitch: func.isRequired,
+};

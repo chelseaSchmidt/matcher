@@ -1,17 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
 import Switcher from './Switcher';
 
 const List = ({ handleViewSwitch }) => {
   return (
     <div>
       <Switcher
-        view={'uploader'}
+        view="uploader"
         text="Start a New Reconciliation"
         handleViewSwitch={handleViewSwitch}
       />
       <Switcher
-        view={'home'}
+        view="home"
         text="Back to Matcher Home"
         handleViewSwitch={handleViewSwitch}
       />
@@ -21,3 +21,7 @@ const List = ({ handleViewSwitch }) => {
 };
 
 export default List;
+
+List.propTypes = {
+  handleViewSwitch: func.isRequired,
+};

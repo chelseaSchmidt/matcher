@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string, func } from 'prop-types';
 
 const Switcher = ({ view, text, handleViewSwitch }) => {
   return (
@@ -14,3 +14,9 @@ const Switcher = ({ view, text, handleViewSwitch }) => {
 };
 
 export default Switcher;
+
+Switcher.propTypes = {
+  view: string.isRequired,
+  text: string.isRequired,
+  handleViewSwitch: func.isRequired,
+};

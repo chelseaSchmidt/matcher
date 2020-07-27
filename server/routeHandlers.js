@@ -1,7 +1,20 @@
 const Reconciliations = require('../database/model.js');
 
 module.exports.getLastRecon = (req, res) => {
-  // Reconciliations.findOne({})
+  Reconciliations.find({})
+    .sort('-createdAt')
+    .limit(1)
+    .then((results) => {
+      if (results.length === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(200);
+        res.send(results[0]);
+      }
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+    });
 };
 
 module.exports.createRecon = (req, res) => {

@@ -22,7 +22,16 @@ export default class Matcher extends React.Component {
 
   handleFileSubmit(e) {
     e.preventDefault();
-    const { bankFile, bookFile, begBook, endBook, begBank, endBank } = this.state;
+
+    const {
+      bankFile,
+      bookFile,
+      begBook,
+      endBook,
+      begBank,
+      endBank,
+    } = this.state;
+
     if (!bankFile || !bookFile) {
       alert('Please submit both a bank and book file');
     } else {
@@ -33,6 +42,7 @@ export default class Matcher extends React.Component {
       formData.append('endBook', endBook);
       formData.append('begBank', begBank);
       formData.append('endBank', endBank);
+
       axios({
         method: 'post',
         url: '/files',

@@ -2,8 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const multer = require('multer');
-const db = require('../database/index.js');
 const Reconciliations = require('../database/model.js');
+require('../database/index.js');
 
 const upload = multer();
 const app = express();
@@ -14,13 +14,20 @@ app.use(morgan('dev'));
 app.use(express.static(publicDir));
 
 app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
-  const { begBook, endBook, begBank, endBank } = req.body;
+  const {
+    begBook,
+    endBook,
+    begBank,
+    endBank,
+  } = req.body;
+
   if (req.files.length < 2) {
     res.status(400);
     res.send('Please submit two source files');
   } else {
     const bankLines = req.files[0].buffer.toString().split('\n').slice(8, -1);
     const bookLines = req.files[1].buffer.toString().split('\n').slice(1);
+
     const bankTxns = bankLines.map((line) => {
       const fields = line.split(',');
       const txn = {
@@ -30,6 +37,7 @@ app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
       };
       return txn;
     });
+
     const bookTxns = bookLines.map((line) => {
       const fields = line.split(',');
       const txn = {
@@ -39,6 +47,7 @@ app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
       };
       return txn;
     });
+
     const newRecon = {
       bookTxns,
       bankTxns,
@@ -47,6 +56,7 @@ app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
       endBank: Number(endBank),
       endBook: Number(endBook),
     };
+
     Reconciliations.create(newRecon)
       .then(() => {
         res.sendStatus(201);

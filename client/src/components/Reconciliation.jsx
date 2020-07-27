@@ -64,8 +64,8 @@ export default class Reconciliation extends React.Component {
         <div id="mismatcher">
           <div id="bank-mismatches">
             <p>Transactions in Bank</p>
-            {mismatchGroup.bank.map((txn) => {
-              return <div>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
+            {mismatchGroup.bank.map((txn, i) => {
+              return <div key={`${i}-${txn.description}`}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
             })}
           </div>
           <div id="book-mismatches">

@@ -136,7 +136,7 @@ export default class Uploader extends React.Component {
               </div>
             );
           })}
-          <button type="button" onClick={this.handleFileSubmit}>Submit</button>
+          <button hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
         </form>
         <div hidden={!ready}>
           <p>Success</p>

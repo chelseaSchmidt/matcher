@@ -30,6 +30,17 @@ module.exports.getMismatchList = (bankTxns, bookTxns) => {
   return mismatches;
 };
 
-module.exports.getMismatchGroup = () => {
-
+module.exports.getMismatchGroup = (bankTxns, bookTxns, amount) => {
+  const mismatchGroup = { bank: [], book: [] };
+  bankTxns.forEach((txn) => {
+    if (txn.amount === amount) {
+      mismatchGroup.bank.push(txn);
+    }
+  });
+  bookTxns.forEach((txn) => {
+    if (txn.amount === amount) {
+      mismatchGroup.book.push(txn);
+    }
+  });
+  return mismatchGroup;
 };

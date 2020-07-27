@@ -35,9 +35,7 @@ module.exports.getAllRecons = (req, res) => {
 
 module.exports.createRecon = (req, res) => {
   const {
-    begBook,
     endBook,
-    begBank,
     endBank,
   } = req.body;
 
@@ -71,8 +69,6 @@ module.exports.createRecon = (req, res) => {
     const newRecon = {
       bookTxns,
       bankTxns,
-      begBank: Number(begBank),
-      begBook: Number(begBook),
       endBank: Number(endBank),
       endBook: Number(endBook),
     };

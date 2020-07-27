@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
-import { getMismatchList, getMismatchGroup } from '../utilities/getMismatches';
+import { getMismatchList, getMismatchGroup, createRecon } from '../utilities/reconAnalyzers';
 import '../styles/Reconciliation.css';
 
 export default class Reconciliation extends React.Component {
@@ -27,14 +27,8 @@ export default class Reconciliation extends React.Component {
       axios.get('/last-recon')
         .then(({ data }) => {
           const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
-          this.setState({
-            unreconciled: data.endBank - data.endBook,
-            bankTxns: data.bankTxns,
-            bookTxns: data.bookTxns,
-            mismatches: mismatchList,
-            comparedDiff: mismatchTotal,
-            remainingDiff: data.endBank - data.endBook - mismatchTotal,
-          });
+          const recon = createRecon(data, mismatchList, mismatchTotal);
+          this.setState(recon);
         })
         .catch((err) => {
           console.error(err);
@@ -42,14 +36,8 @@ export default class Reconciliation extends React.Component {
     } else {
       const data = this.targetRecon;
       const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
-      this.setState({
-        unreconciled: data.endBank - data.endBook,
-        bankTxns: data.bankTxns,
-        bookTxns: data.bookTxns,
-        mismatches: mismatchList,
-        comparedDiff: mismatchTotal,
-        remainingDiff: data.endBank - data.endBook - mismatchTotal,
-      });
+      const recon = createRecon(data, mismatchList, mismatchTotal);
+      this.setState(recon);
     }
   }
 

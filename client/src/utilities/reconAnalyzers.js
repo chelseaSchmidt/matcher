@@ -52,3 +52,14 @@ module.exports.getMismatchGroup = (bankTxns, bookTxns, amount) => {
   });
   return mismatchGroup;
 };
+
+module.exports.createRecon = (data, mismatchList, mismatchTotal) => {
+ return {
+  unreconciled: data.endBank - data.endBook,
+  bankTxns: data.bankTxns,
+  bookTxns: data.bookTxns,
+  mismatches: mismatchList,
+  comparedDiff: mismatchTotal,
+  remainingDiff: data.endBank - data.endBook - mismatchTotal,
+ };
+};

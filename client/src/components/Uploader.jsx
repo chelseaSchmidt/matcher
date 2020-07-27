@@ -15,6 +15,8 @@ export default class Uploader extends React.Component {
       endBook: 0,
       begBank: 0,
       endBank: 0,
+      ready: false,
+      error: false,
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.chooseFile = this.chooseFile.bind(this);
@@ -52,7 +54,16 @@ export default class Uploader extends React.Component {
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
       })
+        .then(() => {
+          this.setState({
+            ready: true,
+            error: false,
+          });
+        })
         .catch((err) => {
+          this.setState({
+            error: true,
+          });
           console.error(err);
         });
     }
@@ -83,14 +94,14 @@ export default class Uploader extends React.Component {
   }
 
   render() {
-    const { bankFile, bookFile } = this.state;
+    const { bankFile, bookFile, ready, error } = this.state;
     const inputFields = ['Beginning book', 'Beginning bank', 'Ending book', 'Ending bank'];
     const inputIds = ['begBook', 'begBank', 'endBook', 'endBank'];
     return (
       <div>
         <Switcher
           view="list"
-          text="See All Reconciliations"
+          text="See Saved Reconciliations"
           handleViewSwitch={this.handleViewSwitch}
         />
         <Switcher
@@ -125,8 +136,20 @@ export default class Uploader extends React.Component {
               </div>
             );
           })}
-          <button type="button" onClick={this.handleFileSubmit}>Submit</button>
+          <button hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
         </form>
+        <div hidden={!ready}>
+          <p>Success</p>
+          <Switcher
+            view="reconciliation"
+            text="Start Reconciliation"
+            handleViewSwitch={this.handleViewSwitch}
+          />
+        </div>
+        <div hidden={!error}>
+          <p>Error</p>
+          <p>Please check that two source files were selected in the accepted formats</p>
+        </div>
       </div>
     );
   }

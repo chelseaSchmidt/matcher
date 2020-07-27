@@ -73,7 +73,7 @@ const reconciliationSchema = new mongoose.Schema({
   },
   bankTxns: [bankTransactionsSchema],
   bookTxns: [bookTransactionsSchema],
-});
+}, { timestamps: {} });
 
 const Reconciliations = mongoose.model('Reconciliation', reconciliationSchema);
 

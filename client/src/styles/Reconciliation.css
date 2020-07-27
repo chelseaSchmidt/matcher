@@ -1,0 +1,8 @@
+#mismatcher {
+  display: flex;
+  flex-direction: row;
+}
+
+#bank-mismatches, #book-mismatches {
+  border: 1px solid black;
+}

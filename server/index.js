@@ -14,6 +14,7 @@ app.use(morgan('dev'));
 app.use(express.static(publicDir));
 
 app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
+  const { begBook, endBook, begBank, endBank } = req.body;
   if (req.files.length < 2) {
     res.status(400);
     res.send('Please submit two source files');
@@ -38,7 +39,15 @@ app.post('/files', upload.array('sourceFiles', 2), (req, res) => {
       };
       return txn;
     });
-    Reconciliations.create({ bookTxns, bankTxns })
+    const newRecon = {
+      bookTxns,
+      bankTxns,
+      begBank: Number(begBank),
+      begBook: Number(begBook),
+      endBank: Number(endBank),
+      endBook: Number(endBook),
+    };
+    Reconciliations.create(newRecon)
       .then(() => {
         res.sendStatus(201);
       })

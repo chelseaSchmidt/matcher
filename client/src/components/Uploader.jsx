@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../styles/Uploader.css';
 import FileInput from './FileInput';
 import Switcher from './Switcher';
+import TextInput from './TextInput';
 
 export default class Uploader extends React.Component {
   constructor(props) {
@@ -11,9 +12,7 @@ export default class Uploader extends React.Component {
     this.state = {
       bankFile: { name: '' },
       bookFile: { name: '' },
-      begBook: 0,
       endBook: 0,
-      begBank: 0,
       endBank: 0,
       ready: false,
       error: false,
@@ -27,25 +26,14 @@ export default class Uploader extends React.Component {
 
   handleFileSubmit(e) {
     e.preventDefault();
-
-    const {
-      bankFile,
-      bookFile,
-      begBook,
-      endBook,
-      begBank,
-      endBank,
-    } = this.state;
-
+    const { bankFile, bookFile, endBook, endBank } = this.state;
     if (!bankFile || !bookFile) {
       alert('Please submit both a bank and book file');
     } else {
       const formData = new FormData();
       formData.append('sourceFiles', bankFile);
       formData.append('sourceFiles', bookFile);
-      formData.append('begBook', begBook);
       formData.append('endBook', endBook);
-      formData.append('begBank', begBank);
       formData.append('endBank', endBank);
 
       axios({
@@ -95,20 +83,12 @@ export default class Uploader extends React.Component {
 
   render() {
     const { bankFile, bookFile, ready, error } = this.state;
-    const inputFields = ['Beginning book', 'Beginning bank', 'Ending book', 'Ending bank'];
-    const inputIds = ['begBook', 'begBank', 'endBook', 'endBank'];
+    const inputFields = ['Ending book', 'Ending bank'];
+    const inputIds = ['endBook', 'endBank'];
     return (
       <div>
-        <Switcher
-          view="list"
-          text="See Saved Reconciliations"
-          handleViewSwitch={this.handleViewSwitch}
-        />
-        <Switcher
-          view="home"
-          text="Back to Matcher Home"
-          handleViewSwitch={this.handleViewSwitch}
-        />
+        <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
         <form>
           <FileInput
             type="bank"
@@ -124,27 +104,20 @@ export default class Uploader extends React.Component {
           />
           {inputFields.map((field, i) => {
             return (
-              <div key={inputIds[i]}>
-                <label htmlFor={inputIds[i]}>{`${field} balance`}</label>
-                <input
-                  type="text"
-                  id={inputIds[i]}
-                  name={inputIds[i]}
-                  onChange={this.handleTextInputs}
-                  value={this.state[inputIds[i]]}
-                />
-              </div>
+              <TextInput
+                key={inputIds[i]}
+                id={inputIds[i]}
+                field={field}
+                value={this.state[inputIds[i]]}
+                handleTextInputs={this.handleTextInputs}
+              />
             );
           })}
           <button hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
         </form>
         <div hidden={!ready}>
           <p>Success</p>
-          <Switcher
-            view="reconciliation"
-            text="Start Reconciliation"
-            handleViewSwitch={this.handleViewSwitch}
-          />
+          <Switcher view="reconciliation" viewNum={2} handleViewSwitch={this.handleViewSwitch} />
         </div>
         <div hidden={!error}>
           <p>Error</p>

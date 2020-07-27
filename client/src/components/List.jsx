@@ -1,26 +1,51 @@
 import React from 'react';
 import { func } from 'prop-types';
+import axios from 'axios';
 import Switcher from './Switcher';
 
-const List = ({ handleViewSwitch }) => {
-  return (
-    <div>
-      <Switcher
-        view="uploader"
-        text="Start a New Reconciliation"
-        handleViewSwitch={handleViewSwitch}
-      />
-      <Switcher
-        view="home"
-        text="Back to Matcher Home"
-        handleViewSwitch={handleViewSwitch}
-      />
-      <p>List View In Progress</p>
-    </div>
-  );
-};
+export default class List extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      reconciliations: [],
+    };
+    this.handleViewSwitch = props.handleViewSwitch;
+  }
 
-export default List;
+  componentDidMount() {
+    axios.get('/recons')
+      .then(({ data }) => {
+        this.setState({
+          reconciliations: data,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  render() {
+    const { reconciliations } = this.state;
+    return (
+      <div>
+        <Switcher view="uploader" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+        {reconciliations.map((recon) => {
+          return (
+            <button
+              type="button"
+              className="saved-recon-btn"
+              key={recon.createdAt}
+              onClick={(e) => {this.handleViewSwitch(e, recon)}}
+            >
+              {recon.createdAt}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+};
 
 List.propTypes = {
   handleViewSwitch: func.isRequired,

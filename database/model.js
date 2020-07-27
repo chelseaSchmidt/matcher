@@ -55,15 +55,7 @@ const bankTransactionsSchema = new mongoose.Schema({
 });
 
 const reconciliationSchema = new mongoose.Schema({
-  begBank: {
-    type: Number,
-    required: true,
-  },
   endBank: {
-    type: Number,
-    required: true,
-  },
-  begBook: {
     type: Number,
     required: true,
   },

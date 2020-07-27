@@ -16,6 +16,7 @@ export default class Uploader extends React.Component {
       begBank: 0,
       endBank: 0,
       ready: false,
+      error: false,
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.chooseFile = this.chooseFile.bind(this);
@@ -56,9 +57,13 @@ export default class Uploader extends React.Component {
         .then(() => {
           this.setState({
             ready: true,
+            error: false,
           });
         })
         .catch((err) => {
+          this.setState({
+            error: true,
+          });
           console.error(err);
         });
     }
@@ -89,7 +94,7 @@ export default class Uploader extends React.Component {
   }
 
   render() {
-    const { bankFile, bookFile, ready } = this.state;
+    const { bankFile, bookFile, ready, error } = this.state;
     const inputFields = ['Beginning book', 'Beginning bank', 'Ending book', 'Ending bank'];
     const inputIds = ['begBook', 'begBank', 'endBook', 'endBank'];
     return (
@@ -141,7 +146,10 @@ export default class Uploader extends React.Component {
             handleViewSwitch={this.handleViewSwitch}
           />
         </div>
-
+        <div hidden={!error}>
+          <p>Error</p>
+          <p>Please check that two source files were selected in the accepted formats</p>
+        </div>
       </div>
     );
   }

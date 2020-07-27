@@ -1,12 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
+import Switcher from './Switcher';
 
-const Reconciliation = () => {
-
+const Reconciliation = ({ handleViewSwitch }) => {
+  return (
+    <div>
+      <Switcher
+        view="list"
+        text="See All Reconciliations"
+        handleViewSwitch={handleViewSwitch}
+      />
+      <Switcher
+        view="home"
+        text="Back to Matcher Home"
+        handleViewSwitch={handleViewSwitch}
+      />
+      Reconciliation View In Progress
+    </div>
+  );
 };
 
 export default Reconciliation;
 
-Reconciliations.propTypes = {
-
+Reconciliation.propTypes = {
+  handleViewSwitch: func.isRequired,
 };

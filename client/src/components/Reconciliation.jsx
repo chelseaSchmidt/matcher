@@ -48,7 +48,7 @@ export default class Reconciliation extends React.Component {
       <div>
         <Switcher
           view="list"
-          text="See All Reconciliations"
+          text="See Saved Reconciliations"
           handleViewSwitch={this.handleViewSwitch}
         />
         <Switcher
@@ -62,15 +62,15 @@ export default class Reconciliation extends React.Component {
         </div>
         <div id="mismatcher">
           <div id="bank-mismatches">
-            <p>Bank Mismatches</p>
+            <p>Transactions in Bank</p>
             {mismatchGroup.bank.map((txn) => {
               return <div>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
             })}
           </div>
           <div id="book-mismatches">
-            <p>Book Mismatches</p>
+            <p>Transactions Booked</p>
             {mismatchGroup.book.map((txn) => {
-              return <div>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
+              return <div key={txn.description}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
             })}
           </div>
         </div>

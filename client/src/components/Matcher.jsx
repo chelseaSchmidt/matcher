@@ -33,7 +33,7 @@ export default class Matcher extends React.Component {
           />
           <Switcher
             view="list"
-            text="See All Reconciliations"
+            text="See Saved Reconciliations"
             handleViewSwitch={this.handleViewSwitch}
           />
         </div>

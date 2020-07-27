@@ -29,15 +29,15 @@ module.exports.createRecon = (req, res) => {
     res.status(400);
     res.send('Please submit two source files');
   } else {
-    const bankLines = req.files[0].buffer.toString().split('\n').slice(8, -1);
+    const bankLines = req.files[0].buffer.toString().split('\n').slice(8);
     const bookLines = req.files[1].buffer.toString().split('\n').slice(1);
 
     const bankTxns = bankLines.map((line) => {
       const fields = line.split(',');
       const txn = {
         date: new Date(fields[0]),
-        description: fields[1].slice(1, -1),
-        amount: Number(fields[2].slice(1, -1)),
+        description: fields[1],
+        amount: Number(fields[2]),
       };
       return txn;
     });

@@ -101,7 +101,7 @@ export default class Uploader extends React.Component {
       <div>
         <Switcher
           view="list"
-          text="See All Reconciliations"
+          text="See Saved Reconciliations"
           handleViewSwitch={this.handleViewSwitch}
         />
         <Switcher

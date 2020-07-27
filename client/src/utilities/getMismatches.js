@@ -1,4 +1,6 @@
 module.exports.getMismatchList = (bankTxns, bookTxns) => {
+  let bankDiff = 0;
+  let bookDiff = 0;
   bankCounts = bankTxns.reduce((counts, txn) => {
     if (txn.amount in counts) {
       counts[txn.amount] += 1;
@@ -19,15 +21,21 @@ module.exports.getMismatchList = (bankTxns, bookTxns) => {
   Object.keys(bankCounts).forEach((amount) => {
     if (!(amount in bookCounts) || bookCounts[amount] !== bankCounts[amount]) {
       mismatches.push(Number(amount));
+      bankDiff += Number(amount) * bankCounts[amount];
     }
   });
   Object.keys(bookCounts).forEach((amount) => {
     if (!(amount in bankCounts)) {
       mismatches.push(Number(amount));
+      bookDiff += Number(amount) * bookCounts[amount];
+    } else if (bookCounts[amount] !== bankCounts[amount]) {
+      bookDiff += Number(amount) * bookCounts[amount];
     }
   });
-  console.log(bankCounts, bookCounts, mismatches);
-  return mismatches;
+  return {
+    mismatchList: mismatches,
+    mismatchTotal: bankDiff - bookDiff,
+  };
 };
 
 module.exports.getMismatchGroup = (bankTxns, bookTxns, amount) => {

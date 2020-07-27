@@ -10,6 +10,8 @@ export default class Reconciliation extends React.Component {
     super(props);
     this.state = {
       unreconciled: 0,
+      comparedDiff: 0,
+      remainingDiff: 0,
       bankTxns: [],
       bookTxns: [],
       mismatches: [],
@@ -22,11 +24,14 @@ export default class Reconciliation extends React.Component {
   componentDidMount() {
     axios.get('/last-recon')
       .then(({ data }) => {
+        const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
         this.setState({
           unreconciled: data.endBank - data.endBook,
           bankTxns: data.bankTxns,
           bookTxns: data.bookTxns,
-          mismatches: getMismatchList(data.bankTxns, data.bookTxns),
+          mismatches: mismatchList,
+          comparedDiff: mismatchTotal,
+          remainingDiff: data.endBank - data.endBook - mismatchTotal,
         });
       })
       .catch((err) => {
@@ -43,7 +48,7 @@ export default class Reconciliation extends React.Component {
   }
 
   render() {
-    const { unreconciled, mismatches, mismatchGroup } = this.state;
+    const { unreconciled, mismatches, mismatchGroup, comparedDiff, remainingDiff } = this.state;
     return (
       <div>
         <Switcher
@@ -56,7 +61,9 @@ export default class Reconciliation extends React.Component {
           text="Back to Matcher Home"
           handleViewSwitch={this.handleViewSwitch}
         />
-        <p>{`Unreconciled Balance: ${unreconciled}`}</p>
+        <p>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</p>
+        <p>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</p>
+        <p>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</p>
         <div>
           {mismatches.map((amount) => <button id={`${amount}-btn`} type="button" key={`${amount}-btn`} onClick={this.handleClick}>{amount}</button>)}
         </div>
@@ -68,9 +75,9 @@ export default class Reconciliation extends React.Component {
             })}
           </div>
           <div id="book-mismatches">
-            <p>Transactions Booked</p>
-            {mismatchGroup.book.map((txn) => {
-              return <div key={txn.description}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
+            <p>Transactions In Book</p>
+            {mismatchGroup.book.map((txn, i) => {
+              return <div key={`${i}-${txn.description}`}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
             })}
           </div>
         </div>

@@ -17,6 +17,22 @@ module.exports.getLastRecon = (req, res) => {
     });
 };
 
+module.exports.getAllRecons = (req, res) => {
+  Reconciliations.find({})
+    .sort('-createdAt')
+    .then((results) => {
+      if (results.length === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(200);
+        res.send(results);
+      }
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+    });
+};
+
 module.exports.createRecon = (req, res) => {
   const {
     begBook,

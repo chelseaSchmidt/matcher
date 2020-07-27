@@ -1,14 +1,20 @@
 import React from 'react';
-import { string, func } from 'prop-types';
+import { string, func, number } from 'prop-types';
 
-const Switcher = ({ view, text, handleViewSwitch }) => {
+const Switcher = ({ view, viewNum, handleViewSwitch }) => {
+  const labels = [
+    'Back to Matcher Home',
+    'Start a New Reconciliation',
+    'Start Reconciliation',
+    'Go To Saved Reconciliations',
+  ];
   return (
     <button
       type="button"
       id={`${view}-btn`}
       onClick={handleViewSwitch}
     >
-      {text}
+      {labels[viewNum]}
     </button>
   );
 };
@@ -17,6 +23,6 @@ export default Switcher;
 
 Switcher.propTypes = {
   view: string.isRequired,
-  text: string.isRequired,
+  viewNum: number.isRequired,
   handleViewSwitch: func.isRequired,
 };

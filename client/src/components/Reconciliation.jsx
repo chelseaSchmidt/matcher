@@ -19,24 +19,38 @@ export default class Reconciliation extends React.Component {
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.handleClick = this.handleClick.bind(this);
+    this.targetRecon = props.targetRecon;
   }
 
   componentDidMount() {
-    axios.get('/last-recon')
-      .then(({ data }) => {
-        const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
-        this.setState({
-          unreconciled: data.endBank - data.endBook,
-          bankTxns: data.bankTxns,
-          bookTxns: data.bookTxns,
-          mismatches: mismatchList,
-          comparedDiff: mismatchTotal,
-          remainingDiff: data.endBank - data.endBook - mismatchTotal,
+    if (!this.targetRecon) {
+      axios.get('/last-recon')
+        .then(({ data }) => {
+          const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
+          this.setState({
+            unreconciled: data.endBank - data.endBook,
+            bankTxns: data.bankTxns,
+            bookTxns: data.bookTxns,
+            mismatches: mismatchList,
+            comparedDiff: mismatchTotal,
+            remainingDiff: data.endBank - data.endBook - mismatchTotal,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        console.error(err);
+    } else {
+      const data = this.targetRecon;
+      const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
+      this.setState({
+        unreconciled: data.endBank - data.endBook,
+        bankTxns: data.bankTxns,
+        bookTxns: data.bookTxns,
+        mismatches: mismatchList,
+        comparedDiff: mismatchTotal,
+        remainingDiff: data.endBank - data.endBook - mismatchTotal,
       });
+    }
   }
 
   handleClick(e) {
@@ -51,16 +65,8 @@ export default class Reconciliation extends React.Component {
     const { unreconciled, mismatches, mismatchGroup, comparedDiff, remainingDiff } = this.state;
     return (
       <div>
-        <Switcher
-          view="list"
-          text="See Saved Reconciliations"
-          handleViewSwitch={this.handleViewSwitch}
-        />
-        <Switcher
-          view="home"
-          text="Back to Matcher Home"
-          handleViewSwitch={this.handleViewSwitch}
-        />
+        <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
         <p>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</p>
         <p>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</p>
         <p>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</p>

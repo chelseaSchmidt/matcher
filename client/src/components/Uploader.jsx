@@ -99,16 +99,8 @@ export default class Uploader extends React.Component {
     const inputIds = ['begBook', 'begBank', 'endBook', 'endBank'];
     return (
       <div>
-        <Switcher
-          view="list"
-          text="See Saved Reconciliations"
-          handleViewSwitch={this.handleViewSwitch}
-        />
-        <Switcher
-          view="home"
-          text="Back to Matcher Home"
-          handleViewSwitch={this.handleViewSwitch}
-        />
+        <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
         <form>
           <FileInput
             type="bank"
@@ -140,11 +132,7 @@ export default class Uploader extends React.Component {
         </form>
         <div hidden={!ready}>
           <p>Success</p>
-          <Switcher
-            view="reconciliation"
-            text="Start Reconciliation"
-            handleViewSwitch={this.handleViewSwitch}
-          />
+          <Switcher view="reconciliation" viewNum={2} handleViewSwitch={this.handleViewSwitch} />
         </div>
         <div hidden={!error}>
           <p>Error</p>

@@ -9,33 +9,33 @@ export default class Matcher extends React.Component {
     super(props);
     this.state = {
       view: 'home',
+      savedRecon: null,
     };
     this.handleViewSwitch = this.handleViewSwitch.bind(this);
   }
 
-  handleViewSwitch(e) {
-    const view = e.target.id.slice(0, -4);
-    this.setState({
-      view,
-    });
+  handleViewSwitch(e, savedRecon) {
+    if (savedRecon) {
+      this.setState({
+        view: 'reconciliation',
+        savedRecon,
+      });
+    } else {
+      const view = e.target.id.slice(0, -4);
+      this.setState({
+        view,
+      });
+    }
   }
 
   render() {
-    const { view } = this.state;
+    const { view, savedRecon } = this.state;
     if (view === 'home') {
       return (
         <div>
           <p>Welcome to Matcher</p>
-          <Switcher
-            view="uploader"
-            text="Start a New Reconciliation"
-            handleViewSwitch={this.handleViewSwitch}
-          />
-          <Switcher
-            view="list"
-            text="See Saved Reconciliations"
-            handleViewSwitch={this.handleViewSwitch}
-          />
+          <Switcher view="uploader" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
+          <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
         </div>
       );
     }
@@ -49,7 +49,7 @@ export default class Matcher extends React.Component {
     }
     if (view === 'reconciliation') {
       return (
-        <Reconciliation handleViewSwitch={this.handleViewSwitch} />
+        <Reconciliation handleViewSwitch={this.handleViewSwitch} targetRecon={savedRecon} />
       );
     }
   }

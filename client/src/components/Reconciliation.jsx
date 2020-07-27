@@ -14,8 +14,10 @@ export default class Reconciliation extends React.Component {
 
   componentDidMount() {
     axios.get('/last-recon')
-      .then((res) => {
-        // subtract ending bank from ending book and set state for unreconciled to diff
+      .then(({ data }) => {
+        this.setState({
+          unreconciled: data.endBank - data.endBook,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -23,6 +25,7 @@ export default class Reconciliation extends React.Component {
   }
 
   render() {
+    const { unreconciled } = this.state;
     return (
       <div>
         <Switcher
@@ -35,7 +38,10 @@ export default class Reconciliation extends React.Component {
           text="Back to Matcher Home"
           handleViewSwitch={this.handleViewSwitch}
         />
-        Reconciliation View In Progress
+        <div>
+          <p>Unreconciled Balance:</p>
+          <div>{unreconciled}</div>
+        </div>
       </div>
     );
   }

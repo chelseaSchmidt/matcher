@@ -1,6 +1,7 @@
 import React from 'react';
-import '../styles/Matcher';
 import axios from 'axios';
+import '../styles/Matcher.css';
+import FileInput from './FileInput';
 
 export default class Matcher extends React.Component {
   constructor(props) {
@@ -9,11 +10,13 @@ export default class Matcher extends React.Component {
       bankFile: null,
       bookFile: null,
     };
+    this.chooseFile = this.chooseFile.bind(this);
     this.handleFiles = this.handleFiles.bind(this);
     this.handleFileSubmit = this.handleFileSubmit.bind(this);
   }
 
-  handleFileSubmit() {
+  handleFileSubmit(e) {
+    e.preventDefault();
     const bankFile = document.getElementById('bank-upload').files.item(0);
     const bookFile = document.getElementById('book-upload').files.item(0);
     if (!bankFile || !bookFile) {
@@ -23,11 +26,11 @@ export default class Matcher extends React.Component {
       formData.append('sourceFiles', bankFile);
       formData.append('sourceFiles', bookFile);
       axios({
-          method: 'post',
-          url: '/files',
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
+        method: 'post',
+        url: '/files',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
         .catch((err) => {
           console.error(err);
         });
@@ -50,7 +53,6 @@ export default class Matcher extends React.Component {
       stateCopy.bookFile = bookFile.name;
     }
     this.setState(stateCopy);
-
   }
 
   render() {
@@ -58,20 +60,8 @@ export default class Matcher extends React.Component {
     return (
       <div>
         <form>
-          <div>
-            <label htmlFor="bank-upload">Upload Bank File:</label>
-            <input type="file" id="bank-upload" name="bank-upload" accept=".csv" onChange={this.handleFiles} />
-            <div>{bankFile}</div>
-            <button type="button" id="bank-btn" onClick={this.chooseFile}>Choose File</button>
-          </div>
-
-          <div>
-            <label htmlFor="book-upload">Upload Book File:</label>
-            <input type="file" id="book-upload" name="book-upload" accept=".csv" onChange={this.handleFiles} />
-            <div>{bookFile}</div>
-            <button type="button" id="book-btn" onClick={this.chooseFile}>Choose File</button>
-          </div>
-
+          <FileInput type="bank" fileName={bankFile} chooseFile={this.chooseFile} handleFiles={this.handleFiles} />
+          <FileInput type="book" fileName={bookFile} chooseFile={this.chooseFile} handleFiles={this.handleFiles} />
           <button type="button" onClick={this.handleFileSubmit}>Submit</button>
         </form>
       </div>

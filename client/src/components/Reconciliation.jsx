@@ -20,11 +20,26 @@ export default class Reconciliation extends React.Component {
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.handleClick = this.handleClick.bind(this);
+    this.renderRecon = this.renderRecon.bind(this);
     this.targetRecon = props.targetRecon;
   }
 
   componentDidMount() {
-    if (!this.targetRecon) {
+    this.renderRecon();
+  }
+
+  handleClick(e) {
+    const { bankTxns, bookTxns } = this.state;
+    const amount = Number(e.target.id.slice(0, -4));
+    this.setState({
+      mismatchGroup: getMismatchGroup(bankTxns, bookTxns, amount),
+    });
+  }
+
+  renderRecon(error) {
+    if (error) {
+      console.error(error);
+    } else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
           const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
@@ -40,14 +55,6 @@ export default class Reconciliation extends React.Component {
       const recon = createRecon(data, mismatchList, mismatchTotal);
       this.setState(recon);
     }
-  }
-
-  handleClick(e) {
-    const { bankTxns, bookTxns } = this.state;
-    const amount = Number(e.target.id.slice(0, -4));
-    this.setState({
-      mismatchGroup: getMismatchGroup(bankTxns, bookTxns, amount),
-    });
   }
 
   render() {
@@ -66,13 +73,13 @@ export default class Reconciliation extends React.Component {
           <div id="bank-mismatches">
             <p>Transactions in Bank</p>
             {mismatchGroup.bank.map((txn, i) => {
-              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={true} />;
+              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={true} renderRecon={this.renderRecon} />;
             })}
           </div>
           <div id="book-mismatches">
             <p>Transactions In Book</p>
             {mismatchGroup.book.map((txn, i) => {
-              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={false} />;
+              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={false} renderRecon={this.renderRecon} />;
             })}
           </div>
         </div>

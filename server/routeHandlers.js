@@ -33,6 +33,14 @@ module.exports.getAllRecons = (req, res) => {
     });
 };
 
+module.exports.updateBankTxn = (req, res) => {
+  res.sendStatus(418);
+};
+
+module.exports.updateBookTxn = (req, res) => {
+  res.sendStatus(418);
+};
+
 module.exports.createRecon = (req, res) => {
   const {
     endBook,

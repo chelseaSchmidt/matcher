@@ -1,6 +1,7 @@
 import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
+import moment from 'moment';
 import Switcher from './Switcher';
 import '../styles/List.css';
 
@@ -28,9 +29,11 @@ export default class List extends React.Component {
   render() {
     const { reconciliations } = this.state;
     return (
-      <div>
-        <Switcher view="uploader" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
-        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+      <div id="list-container">
+        <div id="list-btn-area">
+          <Switcher view="uploader" page="list" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
+          <Switcher view="home" page="list" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+        </div>
         <div id="list-area">
           {reconciliations.map((recon) => (
             <button
@@ -39,7 +42,7 @@ export default class List extends React.Component {
               key={recon.createdAt}
               onClick={(e) => { this.handleViewSwitch(e, recon); }}
             >
-              {`${recon.name} | ${recon.createdAt}`}
+              {`${recon.name} | ${moment(recon.createdAt).format("MMM Do YY")}`}
             </button>
           ))}
         </div>

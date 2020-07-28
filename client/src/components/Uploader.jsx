@@ -89,42 +89,46 @@ export default class Uploader extends React.Component {
     const inputFields = ['Ending book', 'Ending bank', 'Bank name'];
     const inputIds = ['endBook', 'endBank', 'bankName'];
     return (
-      <div>
-        <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
-        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
-        <form>
-          <FileInput
-            type="bank"
-            fileName={bankFile.name}
-            chooseFile={this.chooseFile}
-            handleFiles={this.handleFiles}
-          />
-          <FileInput
-            type="book"
-            fileName={bookFile.name}
-            chooseFile={this.chooseFile}
-            handleFiles={this.handleFiles}
-          />
-          {inputFields.map((field, i) => {
-            return (
-              <TextInput
-                key={inputIds[i]}
-                id={inputIds[i]}
-                field={field}
-                value={this.state[inputIds[i]]}
-                handleTextInputs={this.handleTextInputs}
-              />
-            );
-          })}
-          <button hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
-        </form>
-        <div hidden={!ready}>
-          <p>Success</p>
-          <Switcher view="reconciliation" viewNum={2} handleViewSwitch={this.handleViewSwitch} />
+      <div id="uploader-container">
+        <div id="upload-btn-area">
+          <Switcher view="list" page="upload" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+          <Switcher view="home" page="upload" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
         </div>
-        <div hidden={!error}>
-          <p>Error</p>
-          <p>Please check that two source files have been selected and a bank name filled in</p>
+        <div id="form-area">
+          <form>
+            <FileInput
+              type="bank"
+              fileName={bankFile.name}
+              chooseFile={this.chooseFile}
+              handleFiles={this.handleFiles}
+            />
+            <FileInput
+              type="book"
+              fileName={bookFile.name}
+              chooseFile={this.chooseFile}
+              handleFiles={this.handleFiles}
+            />
+            {inputFields.map((field, i) => {
+              return (
+                <TextInput
+                  key={inputIds[i]}
+                  id={inputIds[i]}
+                  field={field}
+                  value={this.state[inputIds[i]]}
+                  handleTextInputs={this.handleTextInputs}
+                />
+              );
+            })}
+            <button id="submit-btn" hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
+          </form>
+          <div hidden={!ready}>
+            <p>Success</p>
+            <Switcher view="reconciliation" page="upload" viewNum={2} handleViewSwitch={this.handleViewSwitch} />
+          </div>
+          <div hidden={!error}>
+            <p>Error</p>
+            <p>Please check that two source files have been selected and a bank name filled in</p>
+          </div>
         </div>
       </div>
     );

@@ -83,8 +83,8 @@ export default class Reconciliation extends React.Component {
 
     return (
       <div>
-        <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
-        <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="list" page="recon" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+        <Switcher view="home" page="recon" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
         <div id="recon-summary">
           <div>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</div>
           <div>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</div>

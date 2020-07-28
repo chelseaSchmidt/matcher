@@ -1,10 +1,14 @@
 import React from 'react';
-import { string, number, func } from 'prop-types';
+import { string, number, func, oneOfType } from 'prop-types';
 
 const TextInput = ({ field, id, value, handleTextInputs }) => {
+  let label = `${field} balance`;
+  if (id = 'bankName') {
+    label = field;
+  }
   return (
     <div key={id}>
-      <label htmlFor={id}>{`${field} balance`}</label>
+      <label htmlFor={id}>{label}</label>
       <input
         type="text"
         id={id}
@@ -21,6 +25,6 @@ export default TextInput;
 TextInput.propTypes = {
   field: string.isRequired,
   id: string.isRequired,
-  value: number.isRequired,
+  value: oneOfType([ string, number ]).isRequired,
   handleTextInputs: func.isRequired,
 };

@@ -55,6 +55,10 @@ const bankTransactionsSchema = new mongoose.Schema({
 });
 
 const reconciliationSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   endBank: {
     type: Number,
     required: true,

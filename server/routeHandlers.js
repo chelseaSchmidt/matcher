@@ -83,7 +83,9 @@ module.exports.createRecon = (req, res) => {
   const {
     endBook,
     endBank,
+    bankName,
   } = req.body;
+  console.log(bankName);
 
   if (req.files.length < 2) {
     res.status(400);
@@ -113,6 +115,7 @@ module.exports.createRecon = (req, res) => {
     });
 
     const newRecon = {
+      name: bankName,
       bookTxns,
       bankTxns,
       endBank: Number(endBank),

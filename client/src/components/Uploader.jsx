@@ -14,6 +14,7 @@ export default class Uploader extends React.Component {
       bookFile: { name: '' },
       endBook: 0,
       endBank: 0,
+      bankName: '',
       ready: false,
       error: false,
     };
@@ -26,7 +27,7 @@ export default class Uploader extends React.Component {
 
   handleFileSubmit(e) {
     e.preventDefault();
-    const { bankFile, bookFile, endBook, endBank } = this.state;
+    const { bankFile, bookFile, endBook, endBank, bankName } = this.state;
     if (!bankFile || !bookFile) {
       alert('Please submit both a bank and book file');
     } else {
@@ -35,6 +36,7 @@ export default class Uploader extends React.Component {
       formData.append('sourceFiles', bookFile);
       formData.append('endBook', endBook);
       formData.append('endBank', endBank);
+      formData.append('bankName', bankName);
 
       axios({
         method: 'post',
@@ -83,8 +85,8 @@ export default class Uploader extends React.Component {
 
   render() {
     const { bankFile, bookFile, ready, error } = this.state;
-    const inputFields = ['Ending book', 'Ending bank'];
-    const inputIds = ['endBook', 'endBank'];
+    const inputFields = ['Ending book', 'Ending bank', 'Bank name'];
+    const inputIds = ['endBook', 'endBank', 'bankName'];
     return (
       <div>
         <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />

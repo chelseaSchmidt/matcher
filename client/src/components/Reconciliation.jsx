@@ -97,9 +97,11 @@ export default class Reconciliation extends React.Component {
     }
 
     return (
-      <div>
-        <Switcher view="list" page="recon" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
-        <Switcher view="home" page="recon" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+      <div id="recon-container">
+        <div id="recon-nav-area">
+          <Switcher view="list" page="recon" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+          <Switcher view="home" page="recon" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
+        </div>
         <div id="recon-summary">
           <div id="summary-fields">
             <div>{`Unreconciled Balance:`}</div>

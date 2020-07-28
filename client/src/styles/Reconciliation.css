@@ -1,3 +1,14 @@
+#recon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#recon-nav-area {
+  display: flex;
+  flex-direction: row;
+}
+
 #mismatcher {
   display: flex;
   flex-direction: row;
@@ -31,6 +42,7 @@
 
 #mismatch-btn-area {
   margin-top: 20px;
+  text-align: center;
 }
 
 .mismatch-btn {

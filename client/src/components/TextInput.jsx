@@ -8,7 +8,7 @@ const TextInput = ({ field, id, value, handleTextInputs }) => {
     label = field;
   }
   return (
-    <div key={id}>
+    <div key={id} className="text-input-container">
       <label htmlFor={id}>{label}</label>
       <input
         type="text"
@@ -16,6 +16,7 @@ const TextInput = ({ field, id, value, handleTextInputs }) => {
         name={id}
         onChange={handleTextInputs}
         value={value}
+        className="text-input"
       />
     </div>
   );

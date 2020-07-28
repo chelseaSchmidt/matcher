@@ -3,6 +3,7 @@ import Uploader from './Uploader';
 import Switcher from './Switcher';
 import List from './List';
 import Reconciliation from './Reconciliation';
+import '../styles/Main.css';
 
 export default class Matcher extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export default class Matcher extends React.Component {
       const view = e.target.id.slice(0, -4);
       this.setState({
         view,
+        savedRecon: null,
       });
     }
   }
@@ -32,10 +34,10 @@ export default class Matcher extends React.Component {
     const { view, savedRecon } = this.state;
     if (view === 'home') {
       return (
-        <div>
-          <p>Welcome to Matcher</p>
-          <Switcher view="uploader" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
-          <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
+        <div id="home-container">
+          <div id="welcome">Welcome to Matcher</div>
+          <Switcher view="uploader" page="home" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
+          <Switcher view="list" page="home" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
         </div>
       );
     }

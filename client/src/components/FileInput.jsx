@@ -7,7 +7,7 @@ const FileInput = ({
   chooseFile,
   handleFiles,
 }) => (
-  <div>
+  <div className="file-input-container">
     <label htmlFor={`${type}-upload`}>{`Upload ${type} file:`}</label>
     <input
       type="file"
@@ -18,7 +18,7 @@ const FileInput = ({
       onChange={handleFiles}
     />
     <div>{fileName}</div>
-    <button type="button" id={`${type}-btn`} onClick={chooseFile}>Choose File</button>
+    <button className="uploader-btn" type="button" id={`${type}-btn`} onClick={chooseFile}>Choose File</button>
   </div>
 );
 

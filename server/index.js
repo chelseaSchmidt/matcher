@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const path = require('path');
 const multer = require('multer');
 const bodyParser = require('body-parser');
-const { createRecon, getLastRecon, getAllRecons, updateBankTxn, updateBookTxn } = require('./routeHandlers.js');
+const { createRecon, getLastRecon, getAllRecons, updateCutoff } = require('./routeHandlers.js');
 require('../database/index.js');
 
 const upload = multer();
@@ -18,8 +18,7 @@ app.use(express.static(publicDir));
 app.post('/files', upload.array('sourceFiles', 2), createRecon);
 app.get('/last-recon', getLastRecon);
 app.get('/recons', getAllRecons);
-app.patch('/bank-transaction/:id', updateBankTxn);
-app.patch('/book-transaction/:id', updateBookTxn);
+app.patch('/transaction/:id', updateCutoff);
 
 app.listen(port, () => {
   console.log(`Good to go at port ${port}`);

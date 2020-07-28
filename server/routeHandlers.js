@@ -33,23 +33,27 @@ module.exports.getAllRecons = (req, res) => {
     });
 };
 
-module.exports.updateBankTxn = (req, res) => {
-  console.log(req.body);
-  const { isCutoff } = req.body;
-  Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.cutoff': isCutoff } }, { new: true })
-    .then((modified) => {
-      console.log(modified);
-      res.status(200);
-      res.send(modified);
-    })
-    .catch(() => {
-      res.sendStatus(500);
-    });
-};
-
-module.exports.updateBookTxn = (req, res) => {
-  console.log(req.params);
-  res.sendStatus(418);
+module.exports.updateCutoff = (req, res) => {
+  const { isCutoff, type } = req.body;
+  if (type === 'bank') {
+    Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.cutoff': isCutoff } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  } else {
+    Reconciliation.findOneAndUpdate({ 'bookTxns._id': req.params.id }, { $set: { 'bookTxns.$.cutoff': isCutoff } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  }
 };
 
 module.exports.createRecon = (req, res) => {

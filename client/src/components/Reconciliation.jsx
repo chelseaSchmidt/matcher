@@ -2,6 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
+import Transaction from './Transaction';
 import { getMismatchList, getMismatchGroup, createRecon } from '../utilities/reconAnalyzers';
 import '../styles/Reconciliation.css';
 
@@ -65,13 +66,13 @@ export default class Reconciliation extends React.Component {
           <div id="bank-mismatches">
             <p>Transactions in Bank</p>
             {mismatchGroup.bank.map((txn, i) => {
-              return <div key={`${i}-${txn.description}`}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
+              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={true} />;
             })}
           </div>
           <div id="book-mismatches">
             <p>Transactions In Book</p>
             {mismatchGroup.book.map((txn, i) => {
-              return <div key={`${i}-${txn.description}`}>{`${txn.date} | ${txn.description} | ${txn.amount}`}</div>;
+              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={false} />;
             })}
           </div>
         </div>

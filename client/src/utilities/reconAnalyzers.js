@@ -67,7 +67,7 @@ module.exports.createRecon = (data, mismatchList, mismatchTotal) => {
     return total;
   }, 0);
   const bankIncorrectAmt = data.bankTxns.reduce((total, txn) => {
-    if (txn.incorrect) {
+    if (txn.missing) {
       return total + txn.amount;
     }
     return total;
@@ -86,6 +86,6 @@ module.exports.createRecon = (data, mismatchList, mismatchTotal) => {
     comparedDiff: mismatchTotal,
     remainingDiff: data.endBank - data.endBook - mismatchTotal,
     cutoffAmt: bankCutoffAmt + bookCutoffAmt,
-    incorrectAmt: bankIncorrectAmt + bookIncorrectAmt,
+    incorrectAmt: bankIncorrectAmt - bookIncorrectAmt,
   };
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
+import '../styles/List.css';
 
 export default class List extends React.Component {
   constructor(props) {
@@ -30,16 +31,18 @@ export default class List extends React.Component {
       <div>
         <Switcher view="uploader" viewNum={1} handleViewSwitch={this.handleViewSwitch} />
         <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
-        {reconciliations.map((recon) => (
-          <button
-            type="button"
-            className="saved-recon-btn"
-            key={recon.createdAt}
-            onClick={(e) => { this.handleViewSwitch(e, recon); }}
-          >
-            {`${recon.name} | ${recon.createdAt}`}
-          </button>
-        ))}
+        <div id="list-area">
+          {reconciliations.map((recon) => (
+            <button
+              type="button"
+              className="saved-recon-btn"
+              key={recon.createdAt}
+              onClick={(e) => { this.handleViewSwitch(e, recon); }}
+            >
+              {`${recon.name} | ${recon.createdAt}`}
+            </button>
+          ))}
+        </div>
       </div>
     );
   }

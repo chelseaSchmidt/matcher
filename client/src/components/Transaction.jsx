@@ -1,21 +1,21 @@
 import React from 'react';
 import {object, bool, func } from 'prop-types';
-import { updateCutoffTxn } from '../utilities/httpRequests';
+import { updateCutoff, updateIncorrect } from '../utilities/httpRequests';
 
 const Transaction = ({ txn, isBank, renderRecon }) => {
-  let button3 = 'Incorrect';
+  let typeOfError = 'Incorrect';
   let type = 'book';
   if (isBank) {
-    button3 = 'Missing';
+    typeOfError = 'Missing';
     type = 'bank';
   }
 
   return (
     <div>
-      <span>{`${txn.date} | ${txn.description} | ${txn.amount}`}</span>
-      <button type="button" onClick={() => updateCutoffTxn(txn._id, type, renderRecon, !txn.cutoff)}>Cutoff</button>
+      <span>{`${txn.date} | ${txn.description} | ${txn.amount} | Cutoff: ${txn.cutoff} | ${typeOfError}: ${txn[typeOfError.toLowerCase()]}`}</span>
+      <button type="button" onClick={() => updateCutoff(txn._id, type, renderRecon, !txn.cutoff)}>Cutoff</button>
+      <button type="button" onClick={() => updateIncorrect(txn._id, type, renderRecon, !txn[typeOfError.toLowerCase()])}>{typeOfError}</button>
       <button type="button">Define Group</button>
-      <button type="button">{button3}</button>
     </div>
   );
 };

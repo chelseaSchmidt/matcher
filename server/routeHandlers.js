@@ -56,6 +56,29 @@ module.exports.updateCutoff = (req, res) => {
   }
 };
 
+module.exports.updateIncorrect = (req, res) => {
+  const { isIncorrect, type } = req.body;
+  if (type === 'bank') {
+    Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.missing': isIncorrect } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  } else {
+    Reconciliation.findOneAndUpdate({ 'bookTxns._id': req.params.id }, { $set: { 'bookTxns.$.incorrect': isIncorrect } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  }
+};
+
 module.exports.createRecon = (req, res) => {
   const {
     endBook,

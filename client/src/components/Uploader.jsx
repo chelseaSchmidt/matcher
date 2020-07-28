@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
@@ -123,7 +124,7 @@ export default class Uploader extends React.Component {
         </div>
         <div hidden={!error}>
           <p>Error</p>
-          <p>Please check that two source files were selected in the accepted formats</p>
+          <p>Please check that two source files have been selected and a bank name filled in</p>
         </div>
       </div>
     );

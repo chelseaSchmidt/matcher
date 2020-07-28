@@ -1,9 +1,10 @@
+/* eslint-disable object-curly-newline */
 import React from 'react';
 import { string, number, func, oneOfType } from 'prop-types';
 
 const TextInput = ({ field, id, value, handleTextInputs }) => {
   let label = `${field} balance`;
-  if (id = 'bankName') {
+  if (id === 'bankName') {
     label = field;
   }
   return (
@@ -25,6 +26,6 @@ export default TextInput;
 TextInput.propTypes = {
   field: string.isRequired,
   id: string.isRequired,
-  value: oneOfType([ string, number ]).isRequired,
+  value: oneOfType([string, number]).isRequired,
   handleTextInputs: func.isRequired,
 };

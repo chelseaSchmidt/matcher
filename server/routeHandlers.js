@@ -12,7 +12,7 @@ module.exports.getLastRecon = (req, res) => {
         res.send(results[0]);
       }
     })
-    .catch((err) => {
+    .catch(() => {
       res.sendStatus(500);
     });
 };
@@ -28,7 +28,7 @@ module.exports.getAllRecons = (req, res) => {
         res.send(results);
       }
     })
-    .catch((err) => {
+    .catch(() => {
       res.sendStatus(500);
     });
 };
@@ -85,7 +85,6 @@ module.exports.createRecon = (req, res) => {
     endBank,
     bankName,
   } = req.body;
-  console.log(bankName);
 
   if (req.files.length < 2) {
     res.status(400);
@@ -126,8 +125,7 @@ module.exports.createRecon = (req, res) => {
       .then(() => {
         res.sendStatus(201);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         res.sendStatus(500);
       });
   }

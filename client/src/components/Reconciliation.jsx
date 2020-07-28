@@ -1,5 +1,5 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { func, object } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
 import Transaction from './Transaction';
@@ -71,7 +71,16 @@ export default class Reconciliation extends React.Component {
   }
 
   render() {
-    const { unreconciled, mismatches, mismatchGroup, comparedDiff, remainingDiff, cutoffAmt, incorrectAmt } = this.state;
+    const {
+      unreconciled,
+      mismatches,
+      mismatchGroup,
+      comparedDiff,
+      remainingDiff,
+      cutoffAmt,
+      incorrectAmt,
+    } = this.state;
+
     return (
       <div>
         <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
@@ -104,8 +113,9 @@ export default class Reconciliation extends React.Component {
       </div>
     );
   }
-};
+}
 
 Reconciliation.propTypes = {
   handleViewSwitch: func.isRequired,
+  targetRecon: object.isRequired,
 };

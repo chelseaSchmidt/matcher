@@ -1,5 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import {object, bool, func } from 'prop-types';
+import { object, bool, func } from 'prop-types';
 import { updateCutoff, updateIncorrect } from '../utilities/httpRequests';
 
 const Transaction = ({ txn, isBank, renderRecon }) => {

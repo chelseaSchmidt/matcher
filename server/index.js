@@ -3,7 +3,13 @@ const morgan = require('morgan');
 const path = require('path');
 const multer = require('multer');
 const bodyParser = require('body-parser');
-const { createRecon, getLastRecon, getAllRecons, updateCutoff, updateIncorrect } = require('./routeHandlers.js');
+const {
+  createRecon,
+  getLastRecon,
+  getAllRecons,
+  updateCutoff,
+  updateIncorrect,
+} = require('./routeHandlers.js');
 require('../database/index.js');
 
 const upload = multer();

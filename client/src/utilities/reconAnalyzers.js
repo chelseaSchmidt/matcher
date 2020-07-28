@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 module.exports.getMismatchList = (bankTxns, bookTxns) => {
   let bankDiff = 0;
   let bookDiff = 0;
-  bankCounts = bankTxns.reduce((counts, txn) => {
+  const bankCounts = bankTxns.reduce((counts, txn) => {
     if (txn.amount in counts) {
       counts[txn.amount] += 1;
     } else {
@@ -9,7 +10,7 @@ module.exports.getMismatchList = (bankTxns, bookTxns) => {
     }
     return counts;
   }, {});
-  bookCounts = bookTxns.reduce((counts, txn) => {
+  const bookCounts = bookTxns.reduce((counts, txn) => {
     if (txn.amount in counts) {
       counts[txn.amount] += 1;
     } else {

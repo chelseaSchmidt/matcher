@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const multer = require('multer');
+const bodyParser = require('body-parser');
 const { createRecon, getLastRecon, getAllRecons, updateBankTxn, updateBookTxn } = require('./routeHandlers.js');
 require('../database/index.js');
 
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000;
 const publicDir = path.resolve(__dirname, '..', 'client', 'public');
 
 app.use(morgan('dev'));
+app.use(bodyParser.json());
 app.use(express.static(publicDir));
 
 app.post('/files', upload.array('sourceFiles', 2), createRecon);

@@ -8,19 +8,14 @@ export const getMostRecent = () => {
 
 };
 
-export const updateTransaction = (id, type, next, isCutoff=false, group=null, incorrect=false, missing=false) => {
+export const updateCutoffTxn = (id, type, next, isCutoff) => {
   axios({
     method: 'patch',
     url: `/${type}-transaction/${id}`,
-    data: {
-      isCutoff,
-      group,
-      incorrect,
-      missing,
-    },
+    data: { isCutoff, },
   })
-    .then(() => {
-      next(null);
+    .then(({ data }) => {
+      next(null, data);
     })
     .catch((err) => {
       next(err);

@@ -1,7 +1,7 @@
-const Reconciliations = require('../database/model.js');
+const Reconciliation = require('../database/model.js');
 
 module.exports.getLastRecon = (req, res) => {
-  Reconciliations.find({})
+  Reconciliation.find({})
     .sort('-createdAt')
     .limit(1)
     .then((results) => {
@@ -18,7 +18,7 @@ module.exports.getLastRecon = (req, res) => {
 };
 
 module.exports.getAllRecons = (req, res) => {
-  Reconciliations.find({})
+  Reconciliation.find({})
     .sort('-createdAt')
     .then((results) => {
       if (results.length === 0) {
@@ -34,10 +34,21 @@ module.exports.getAllRecons = (req, res) => {
 };
 
 module.exports.updateBankTxn = (req, res) => {
-  res.sendStatus(418);
+  console.log(req.body);
+  const { isCutoff } = req.body;
+  Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.cutoff': isCutoff } }, { new: true })
+    .then((modified) => {
+      console.log(modified);
+      res.status(200);
+      res.send(modified);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
 };
 
 module.exports.updateBookTxn = (req, res) => {
+  console.log(req.params);
   res.sendStatus(418);
 };
 
@@ -81,7 +92,7 @@ module.exports.createRecon = (req, res) => {
       endBook: Number(endBook),
     };
 
-    Reconciliations.create(newRecon)
+    Reconciliation.create(newRecon)
       .then(() => {
         res.sendStatus(201);
       })

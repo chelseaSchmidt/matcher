@@ -17,6 +17,7 @@ export default class Reconciliation extends React.Component {
       bookTxns: [],
       mismatches: [],
       mismatchGroup: { bank: [], book: [] },
+      amountSelected: null,
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.handleClick = this.handleClick.bind(this);
@@ -33,12 +34,14 @@ export default class Reconciliation extends React.Component {
     const amount = Number(e.target.id.slice(0, -4));
     this.setState({
       mismatchGroup: getMismatchGroup(bankTxns, bookTxns, amount),
+      amountSelected: amount,
     });
   }
 
-  renderRecon(error) {
+  renderRecon(error, modified) {
     if (error) {
       console.error(error);
+
     } else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
@@ -49,10 +52,18 @@ export default class Reconciliation extends React.Component {
         .catch((err) => {
           console.error(err);
         });
-    } else {
+
+    } else if (!modified) {
       const data = this.targetRecon;
       const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
       const recon = createRecon(data, mismatchList, mismatchTotal);
+      this.setState(recon);
+
+    } else {
+      const { amountSelected } = this.state;
+      const { mismatchList, mismatchTotal } = getMismatchList(modified.bankTxns, modified.bookTxns);
+      const recon = createRecon(modified, mismatchList, mismatchTotal);
+      recon.mismatchGroup = getMismatchGroup(modified.bankTxns, modified.bookTxns, amountSelected);
       this.setState(recon);
     }
   }
@@ -63,9 +74,11 @@ export default class Reconciliation extends React.Component {
       <div>
         <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
         <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
-        <p>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</p>
-        <p>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</p>
-        <p>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</p>
+        <div>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</div>
+        <div>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</div>
+        <div>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</div>
+        <div>{`Difference Explained by Cutoff:`}</div>
+        <div>{`Difference Marked Incorrect:`}</div>
         <div>
           {mismatches.map((amount) => <button id={`${amount}-btn`} type="button" key={`${amount}-btn`} onClick={this.handleClick}>{amount}</button>)}
         </div>

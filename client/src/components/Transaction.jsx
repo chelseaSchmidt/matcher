@@ -1,6 +1,6 @@
 import React from 'react';
 import {object, bool, func } from 'prop-types';
-import { updateTransaction } from '../utilities/httpRequests';
+import { updateCutoffTxn } from '../utilities/httpRequests';
 
 const Transaction = ({ txn, isBank, renderRecon }) => {
   let button3 = 'Incorrect';
@@ -14,7 +14,7 @@ const Transaction = ({ txn, isBank, renderRecon }) => {
   return (
     <div>
       <span>{`${txn.date} | ${txn.description} | ${txn.amount}`}</span>
-      <button type="button" onClick={() => updateTransaction(txn._id, type, renderRecon, true)}>Cutoff</button>
+      <button type="button" onClick={() => updateCutoffTxn(txn._id, type, renderRecon, !txn.cutoff)}>Cutoff</button>
       <button type="button">Define Group</button>
       <button type="button">{button3}</button>
     </div>

@@ -54,12 +54,38 @@ module.exports.getMismatchGroup = (bankTxns, bookTxns, amount) => {
 };
 
 module.exports.createRecon = (data, mismatchList, mismatchTotal) => {
- return {
-  unreconciled: data.endBank - data.endBook,
-  bankTxns: data.bankTxns,
-  bookTxns: data.bookTxns,
-  mismatches: mismatchList,
-  comparedDiff: mismatchTotal,
-  remainingDiff: data.endBank - data.endBook - mismatchTotal,
- };
+  const bankCutoffAmt = data.bankTxns.reduce((total, txn) => {
+    if (txn.cutoff) {
+      return total + txn.amount;
+    }
+    return total;
+  }, 0);
+  const bookCutoffAmt = data.bookTxns.reduce((total, txn) => {
+    if (txn.cutoff) {
+      return total + txn.amount;
+    }
+    return total;
+  }, 0);
+  const bankIncorrectAmt = data.bankTxns.reduce((total, txn) => {
+    if (txn.missing) {
+      return total + txn.amount;
+    }
+    return total;
+  }, 0);
+  const bookIncorrectAmt = data.bookTxns.reduce((total, txn) => {
+    if (txn.incorrect) {
+      return total + txn.amount;
+    }
+    return total;
+  }, 0);
+  return {
+    unreconciled: data.endBank - data.endBook,
+    bankTxns: data.bankTxns,
+    bookTxns: data.bookTxns,
+    mismatches: mismatchList,
+    comparedDiff: mismatchTotal,
+    remainingDiff: data.endBank - data.endBook - mismatchTotal,
+    cutoffAmt: bankCutoffAmt + bookCutoffAmt,
+    incorrectAmt: bankIncorrectAmt - bookIncorrectAmt,
+  };
 };

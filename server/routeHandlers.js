@@ -1,7 +1,7 @@
-const Reconciliations = require('../database/model.js');
+const Reconciliation = require('../database/model.js');
 
 module.exports.getLastRecon = (req, res) => {
-  Reconciliations.find({})
+  Reconciliation.find({})
     .sort('-createdAt')
     .limit(1)
     .then((results) => {
@@ -18,7 +18,7 @@ module.exports.getLastRecon = (req, res) => {
 };
 
 module.exports.getAllRecons = (req, res) => {
-  Reconciliations.find({})
+  Reconciliation.find({})
     .sort('-createdAt')
     .then((results) => {
       if (results.length === 0) {
@@ -31,6 +31,52 @@ module.exports.getAllRecons = (req, res) => {
     .catch((err) => {
       res.sendStatus(500);
     });
+};
+
+module.exports.updateCutoff = (req, res) => {
+  const { isCutoff, type } = req.body;
+  if (type === 'bank') {
+    Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.cutoff': isCutoff } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  } else {
+    Reconciliation.findOneAndUpdate({ 'bookTxns._id': req.params.id }, { $set: { 'bookTxns.$.cutoff': isCutoff } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  }
+};
+
+module.exports.updateIncorrect = (req, res) => {
+  const { isIncorrect, type } = req.body;
+  if (type === 'bank') {
+    Reconciliation.findOneAndUpdate({ 'bankTxns._id': req.params.id }, { $set: { 'bankTxns.$.missing': isIncorrect } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  } else {
+    Reconciliation.findOneAndUpdate({ 'bookTxns._id': req.params.id }, { $set: { 'bookTxns.$.incorrect': isIncorrect } }, { new: true })
+      .then((modified) => {
+        res.status(200);
+        res.send(modified);
+      })
+      .catch(() => {
+        res.sendStatus(500);
+      });
+  }
 };
 
 module.exports.createRecon = (req, res) => {
@@ -73,7 +119,7 @@ module.exports.createRecon = (req, res) => {
       endBook: Number(endBook),
     };
 
-    Reconciliations.create(newRecon)
+    Reconciliation.create(newRecon)
       .then(() => {
         res.sendStatus(201);
       })

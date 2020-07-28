@@ -18,6 +18,8 @@ export default class Reconciliation extends React.Component {
       mismatches: [],
       mismatchGroup: { bank: [], book: [] },
       amountSelected: null,
+      cutoffAmt: 0,
+      incorrectAmt: 0,
     };
     this.handleViewSwitch = props.handleViewSwitch;
     this.handleClick = this.handleClick.bind(this);
@@ -69,16 +71,19 @@ export default class Reconciliation extends React.Component {
   }
 
   render() {
-    const { unreconciled, mismatches, mismatchGroup, comparedDiff, remainingDiff } = this.state;
+    const { unreconciled, mismatches, mismatchGroup, comparedDiff, remainingDiff, cutoffAmt, incorrectAmt } = this.state;
     return (
       <div>
         <Switcher view="list" viewNum={3} handleViewSwitch={this.handleViewSwitch} />
         <Switcher view="home" viewNum={0} handleViewSwitch={this.handleViewSwitch} />
-        <div>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</div>
-        <div>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</div>
-        <div>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</div>
-        <div>{`Difference Explained by Cutoff:`}</div>
-        <div>{`Difference Marked Incorrect:`}</div>
+        <div id="recon-summary">
+          <div>{`Unreconciled Balance: $${unreconciled.toFixed(2)}`}</div>
+          <div>{`Remaining (Beginning Balance) Difference: $${remainingDiff.toFixed(2)}`}</div>
+          <div>{`Total Caused By Compared Transactions: $${comparedDiff.toFixed(2)}`}</div>
+          <div>{`Difference Explained by Cutoff: $${cutoffAmt.toFixed(2)}`}</div>
+          <div>{`Difference From Incorrect or Missing: $${incorrectAmt.toFixed(2)}`}</div>
+          <div>{`Net Unexplained Difference: $${(comparedDiff - cutoffAmt - incorrectAmt).toFixed(2)}`}</div>
+        </div>
         <div>
           {mismatches.map((amount) => <button id={`${amount}-btn`} type="button" key={`${amount}-btn`} onClick={this.handleClick}>{amount}</button>)}
         </div>

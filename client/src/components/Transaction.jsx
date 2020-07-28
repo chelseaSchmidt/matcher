@@ -9,7 +9,6 @@ const Transaction = ({ txn, isBank, renderRecon }) => {
     button3 = 'Missing';
     type = 'bank';
   }
-  console.log(txn);
 
   return (
     <div>

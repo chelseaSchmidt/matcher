@@ -25,6 +25,7 @@ export default class Matcher extends React.Component {
       const view = e.target.id.slice(0, -4);
       this.setState({
         view,
+        savedRecon: null,
       });
     }
   }

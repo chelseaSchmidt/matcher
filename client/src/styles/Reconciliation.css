@@ -116,3 +116,9 @@ button:hover {
   background-color: #555;
   color: #fff;
 }
+
+#reconciled-message {
+  font-weight: bolder;
+  color: green;
+  font-size: larger;
+}

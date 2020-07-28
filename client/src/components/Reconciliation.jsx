@@ -47,8 +47,10 @@ export default class Reconciliation extends React.Component {
     } else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
+          const { amountSelected } = this.state;
           const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
           const recon = createRecon(data, mismatchList, mismatchTotal);
+          recon.mismatchGroup = getMismatchGroup(data.bankTxns, data.bookTxns, amountSelected);
           this.setState(recon);
         })
         .catch((err) => {
@@ -84,9 +86,11 @@ export default class Reconciliation extends React.Component {
 
     let toggleReconciled = 'non-zero';
     let hideMismatcher = true;
+    let reconciled = false;
     const netUnexp = comparedDiff - cutoffAmt - incorrectAmt;
     if (netUnexp < 0.02 && netUnexp > -0.02) {
-      toggleReconciled = 'zero'
+      toggleReconciled = 'zero';
+      reconciled = true;
     }
     if (amountSelected) {
       hideMismatcher = false;
@@ -114,6 +118,9 @@ export default class Reconciliation extends React.Component {
             <div id="net-diff" className={`${toggleReconciled} subtotal`}>{`$${netUnexp.toFixed(2)}`}</div>
           </div>
         </div>
+        <div hidden={!reconciled} id="reconciled-message">
+          Account reconciled!
+        </div>
         <div id="mismatch-btn-area">
           <div>Transaction Groups Identified As Causing Difference:</div>
           {mismatches.map((amount) => <button id={`${amount}-btn`} className="mismatch-btn" type="button" key={`${amount}-btn`} onClick={this.handleClick}>{`$${amount}`}</button>)}
@@ -139,5 +146,4 @@ export default class Reconciliation extends React.Component {
 
 Reconciliation.propTypes = {
   handleViewSwitch: func.isRequired,
-  targetRecon: object.isRequired,
 };

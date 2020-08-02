@@ -5,7 +5,7 @@ An open-source single page web application in development to automate bank recon
   - Node 10.20.1
   - npm package manager
   - MongoDB 4.2.7
-  - TNodemon 2.0.4 (To start in development mode)
+  - Nodemon 2.0.4 (To start in development mode)
 
 ## Run the application
   - npm install

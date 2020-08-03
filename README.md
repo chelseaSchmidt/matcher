@@ -12,8 +12,13 @@ An open-source single page web application in development to automate bank recon
   - npm run build:prod || npm run watch:dev
   - npm run start:prod || npm run start:dev
     - Optional environment variable: PORT (defaults to 3000)
+  - Navigate to http://localhost:3000
 
 ## API
+##### To view the application in the browser:
+  - **Endpoint:** /
+  - **Method:** GET
+
 ##### To create a new reconciliation from source files:
   - **Endpoint:** /files
   - **Method:** POST

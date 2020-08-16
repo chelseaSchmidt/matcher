@@ -25,8 +25,6 @@ const Transaction = ({ txn, isBank, renderRecon }) => {
       <span className="date-cell cell">{moment(txn.date).format('MMM Do YYYY')}</span>
       <span className="desc-cell cell">{txn.description}</span>
       <span className="amt-cell cell">{`$${txn.amount}`}</span>
-      {/* <span className="cutoff-cell cell">{`Date Out of Range: ${txn.cutoff}`}</span>
-      <span className="error-cell cell">{`${typeOfError}: ${txn[typeOfError.toLowerCase()]}`}</span> */}
 
       <button className={`${cutoffState}-btn`} type="button" onClick={() => updateCutoff(txn._id, type, renderRecon, !txn.cutoff)}>Date Out of Range</button>
 

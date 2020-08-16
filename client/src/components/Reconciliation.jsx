@@ -43,7 +43,7 @@ export default class Reconciliation extends React.Component {
   renderRecon(error, modified) {
     if (error) {
       console.error(error);
-
+    // if starting a new recon
     } else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
@@ -56,13 +56,13 @@ export default class Reconciliation extends React.Component {
         .catch((err) => {
           console.error(err);
         });
-
+    // if opening a saved recon
     } else if (!modified) {
       const data = this.targetRecon;
       const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
       const recon = createRecon(data, mismatchList, mismatchTotal);
       this.setState(recon);
-
+    // if re-rendering after a modification to recon
     } else {
       const { amountSelected } = this.state;
       const { mismatchList, mismatchTotal } = getMismatchList(modified.bankTxns, modified.bookTxns);

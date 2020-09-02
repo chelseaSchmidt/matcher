@@ -54,7 +54,8 @@ module.exports.getMismatchGroup = (bankTxns, bookTxns, amount) => {
   return mismatchGroup;
 };
 
-module.exports.createRecon = (data, mismatchList, mismatchTotal) => {
+module.exports.createRecon = (data) => {
+  const { mismatchList, mismatchTotal } = module.exports.getMismatchList(data.bankTxns, data.bookTxns);
   const bankCutoffAmt = data.bankTxns.reduce((total, txn) => {
     if (txn.cutoff) {
       return total + txn.amount;

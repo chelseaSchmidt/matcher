@@ -3,7 +3,7 @@ import { func } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
 import Transaction from './Transaction';
-import { getMismatchList, getMismatchGroup, createRecon } from '../utilities/reconAnalyzers';
+import { getMismatchGroup, createRecon } from '../utilities/reconAnalyzers';
 import '../styles/Reconciliation.css';
 
 export default class Reconciliation extends React.Component {
@@ -41,31 +41,22 @@ export default class Reconciliation extends React.Component {
   }
 
   renderRecon(error, modified) {
-    if (error) {
-      console.error(error);
-    // if starting a new recon
-    } else if (!this.targetRecon) {
+    if (error) { console.error(error); }
+    // render new recon
+    else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
-          const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
-          const recon = createRecon(data, mismatchList, mismatchTotal);
-          this.targetRecon = recon;
-          this.setState(recon);
+          this.targetRecon = createRecon(data);
+          this.setState(this.targetRecon);
         })
-        .catch((err) => {
-          console.error(err);
-        });
-    // if opening a saved recon
+        .catch((err) => { console.error(err); });
+    // render saved recon
     } else if (!modified) {
-      const data = this.targetRecon;
-      const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
-      const recon = createRecon(data, mismatchList, mismatchTotal);
-      this.setState(recon);
-    // if re-rendering after a modification to recon
+      this.setState(createRecon(this.targetRecon));
+    // re-render modified recon
     } else {
       const { amountSelected } = this.state;
-      const { mismatchList, mismatchTotal } = getMismatchList(modified.bankTxns, modified.bookTxns);
-      const recon = createRecon(modified, mismatchList, mismatchTotal);
+      const recon = createRecon(modified);
       recon.mismatchGroup = getMismatchGroup(modified.bankTxns, modified.bookTxns, amountSelected);
       this.setState(recon);
     }

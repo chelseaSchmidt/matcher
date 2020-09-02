@@ -1,13 +1,5 @@
 import axios from 'axios';
 
-export const getAll = () => {
-
-};
-
-export const getMostRecent = () => {
-
-};
-
 export const createReconFromSourceFiles = (bankFile, bookFile, endBank, endBook, bankName) => {
   const formData = new FormData();
   formData.append('sourceFiles', bankFile);

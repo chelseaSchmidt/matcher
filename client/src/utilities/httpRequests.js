@@ -8,6 +8,22 @@ export const getMostRecent = () => {
 
 };
 
+export const createReconFromSourceFiles = (bankFile, bookFile, endBank, endBook, bankName) => {
+  const formData = new FormData();
+  formData.append('sourceFiles', bankFile);
+  formData.append('sourceFiles', bookFile);
+  formData.append('endBank', endBank);
+  formData.append('endBook', endBook);
+  formData.append('bankName', bankName);
+
+  return axios({
+    method: 'post',
+    url: '/files',
+    data: formData,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
 export const updateIncorrect = (id, type, next, isIncorrect) => {
   axios({
     method: 'patch',

@@ -1,11 +1,11 @@
 /* eslint-disable object-curly-newline */
 import React from 'react';
 import { func } from 'prop-types';
-import axios from 'axios';
 import '../styles/Uploader.css';
 import FileInput from './FileInput';
 import Switcher from './Switcher';
 import TextInput from './TextInput';
+import { createReconFromSourceFiles } from '../utilities/httpRequests';
 
 export default class Uploader extends React.Component {
   constructor(props) {
@@ -32,29 +32,12 @@ export default class Uploader extends React.Component {
     if (!bankFile || !bookFile) {
       alert('Please submit both a bank and book file');
     } else {
-      const formData = new FormData();
-      formData.append('sourceFiles', bankFile);
-      formData.append('sourceFiles', bookFile);
-      formData.append('endBook', endBook);
-      formData.append('endBank', endBank);
-      formData.append('bankName', bankName);
-
-      axios({
-        method: 'post',
-        url: '/files',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      createReconFromSourceFiles(bankFile, bookFile, endBank, endBook, bankName)
         .then(() => {
-          this.setState({
-            ready: true,
-            error: false,
-          });
+          this.setState({ ready: true, error: false });
         })
         .catch((err) => {
-          this.setState({
-            error: true,
-          });
+          this.setState({ error: true });
           console.error(err);
         });
     }
@@ -108,17 +91,15 @@ export default class Uploader extends React.Component {
               chooseFile={this.chooseFile}
               handleFiles={this.handleFiles}
             />
-            {inputFields.map((field, i) => {
-              return (
-                <TextInput
-                  key={inputIds[i]}
-                  id={inputIds[i]}
-                  field={field}
-                  value={this.state[inputIds[i]]}
-                  handleTextInputs={this.handleTextInputs}
-                />
-              );
-            })}
+            {inputFields.map((field, i) => (
+              <TextInput
+                key={inputIds[i]}
+                id={inputIds[i]}
+                field={field}
+                value={this.state[inputIds[i]]}
+                handleTextInputs={this.handleTextInputs}
+              />
+            ))}
             <button id="submit-btn" hidden={ready} type="button" onClick={this.handleFileSubmit}>Submit</button>
           </form>
           <div hidden={!ready}>

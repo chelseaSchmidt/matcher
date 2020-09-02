@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, object } from 'prop-types';
+import { func } from 'prop-types';
 import axios from 'axios';
 import Switcher from './Switcher';
 import Transaction from './Transaction';
@@ -104,12 +104,12 @@ export default class Reconciliation extends React.Component {
         </div>
         <div id="recon-summary">
           <div id="summary-fields">
-            <div>{`Unreconciled Balance:`}</div>
-            <div>{`Total Caused By Compared Transactions:`}</div>
-            <div className="subtotal">{`Remaining (Beginning Balance) Difference:`}</div>
-            <div>{`Difference Explained by Date Range:`}</div>
-            <div>{`Difference From Incorrect or Missing:`}</div>
-            <div className="subtotal">{`Net Unexplained Difference:`}</div>
+            <div>Unreconciled Balance:</div>
+            <div>Total Caused By Compared Transactions:</div>
+            <div className="subtotal">Remaining (Beginning Balance) Difference:</div>
+            <div>Difference Explained by Date Range:</div>
+            <div>Difference From Incorrect or Missing:</div>
+            <div className="subtotal">Net Unexplained Difference:</div>
           </div>
           <div id="summary-numbers">
             <div>{`$${unreconciled.toFixed(2)}`}</div>
@@ -130,15 +130,25 @@ export default class Reconciliation extends React.Component {
         <div id="mismatcher" hidden={hideMismatcher}>
           <div id="bank-mismatches" hidden={hideMismatcher}>
             <p>Transactions in Bank</p>
-            {mismatchGroup.bank.map((txn, i) => {
-              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={true} renderRecon={this.renderRecon} />;
-            })}
+            {mismatchGroup.bank.map((txn, i) => (
+              <Transaction
+                key={`${i}-${txn.description}`}
+                txn={txn}
+                isBank={true}
+                renderRecon={this.renderRecon}
+              />
+            ))}
           </div>
           <div id="book-mismatches" hidden={hideMismatcher}>
             <p>Transactions In Book</p>
-            {mismatchGroup.book.map((txn, i) => {
-              return <Transaction key={`${i}-${txn.description}`} txn={txn} isBank={false} renderRecon={this.renderRecon} />;
-            })}
+            {mismatchGroup.book.map((txn, i) => (
+              <Transaction
+                key={`${i}-${txn.description}`}
+                txn={txn}
+                isBank={false}
+                renderRecon={this.renderRecon}
+              />
+            ))}
           </div>
         </div>
       </div>

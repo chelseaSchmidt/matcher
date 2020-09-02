@@ -49,10 +49,11 @@ export default class Matcher extends React.Component {
         <List handleViewSwitch={this.handleViewSwitch} />
       );
     }
-    if (view === 'reconciliation') {
-      return (
-        <Reconciliation handleViewSwitch={this.handleViewSwitch} targetRecon={savedRecon} />
-      );
-    }
+    return (
+      <Reconciliation
+        handleViewSwitch={this.handleViewSwitch}
+        targetRecon={savedRecon}
+      />
+    );
   }
 }

@@ -20,5 +20,5 @@ module.exports = {
   ],
   rules: {
   },
-  ignorePatterns: ['bundle.js'],
+  ignorePatterns: ['bundle.js*', 'node_modules*', '1.bundle*'],
 };

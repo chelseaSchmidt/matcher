@@ -1,7 +1,12 @@
 import React from 'react';
 import { string, func, number } from 'prop-types';
 
-const Switcher = ({ view, viewNum, page, handleViewSwitch }) => {
+const Switcher = ({
+  view,
+  viewNum,
+  page,
+  handleViewSwitch,
+}) => {
   const labels = [
     'Back to Matcher Home',
     'Start a New Reconciliation',

@@ -42,7 +42,7 @@ export default class List extends React.Component {
               key={recon.createdAt}
               onClick={(e) => { this.handleViewSwitch(e, recon); }}
             >
-              {`${recon.name} | ${moment(recon.createdAt).format("MMM Do YY")}`}
+              {`${recon.name} | ${moment(recon.createdAt).format('MMM Do YY')}`}
             </button>
           ))}
         </div>

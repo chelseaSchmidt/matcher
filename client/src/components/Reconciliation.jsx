@@ -47,10 +47,9 @@ export default class Reconciliation extends React.Component {
     } else if (!this.targetRecon) {
       axios.get('/last-recon')
         .then(({ data }) => {
-          const { amountSelected } = this.state;
           const { mismatchList, mismatchTotal } = getMismatchList(data.bankTxns, data.bookTxns);
           const recon = createRecon(data, mismatchList, mismatchTotal);
-          recon.mismatchGroup = getMismatchGroup(data.bankTxns, data.bookTxns, amountSelected);
+          this.targetRecon = recon;
           this.setState(recon);
         })
         .catch((err) => {

@@ -9,6 +9,7 @@ const {
   getAllRecons,
   updateCutoff,
   updateIncorrect,
+  deleteRecon,
 } = require('./routeHandlers.js');
 require('../database/index.js');
 
@@ -26,6 +27,7 @@ app.get('/last-recon', getLastRecon);
 app.get('/recons', getAllRecons);
 app.patch('/cutoff-transaction/:id', updateCutoff);
 app.patch('/incorrect-transaction/:id', updateIncorrect);
+app.delete('/recons/:id', deleteRecon);
 
 app.listen(port, () => {
   console.log(`Good to go at port ${port}`);

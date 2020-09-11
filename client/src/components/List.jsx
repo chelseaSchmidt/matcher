@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { func } from 'prop-types';
 import axios from 'axios';
 import moment from 'moment';
 import Switcher from './Switcher';
+import { deleteRecon } from '../utilities/httpRequests';
 import '../styles/List.css';
 
 export default class List extends React.Component {
@@ -12,9 +14,14 @@ export default class List extends React.Component {
       reconciliations: [],
     };
     this.handleViewSwitch = props.handleViewSwitch;
+    this.deleteTargetRecon = this.deleteTargetRecon.bind(this);
   }
 
   componentDidMount() {
+    this.getListOfRecons();
+  }
+
+  getListOfRecons() {
     axios.get('/recons')
       .then(({ data }) => {
         this.setState({
@@ -24,6 +31,13 @@ export default class List extends React.Component {
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  deleteTargetRecon(e) {
+    deleteRecon(e.target.id, (err) => {
+      if (err) { return console.error(err); }
+      return this.getListOfRecons();
+    });
   }
 
   render() {
@@ -36,14 +50,23 @@ export default class List extends React.Component {
         </div>
         <div id="list-area">
           {reconciliations.map((recon) => (
-            <button
-              type="button"
-              className="saved-recon-btn"
-              key={recon.createdAt}
-              onClick={(e) => { this.handleViewSwitch(e, recon); }}
-            >
-              {`${recon.name} | ${moment(recon.createdAt).format('MMM Do YY')}`}
-            </button>
+            <div className="list-row" key={recon.createdAt}>
+              <button
+                type="button"
+                className="saved-recon-btn"
+                onClick={(e) => { this.handleViewSwitch(e, recon); }}
+              >
+                {`${recon.name} | ${moment(recon.createdAt).format('MMM Do YY')}`}
+              </button>
+              <button
+                className="delete-btn"
+                type="button"
+                onClick={this.deleteTargetRecon}
+                id={recon._id}
+              >
+                Delete
+              </button>
+            </div>
           ))}
         </div>
       </div>

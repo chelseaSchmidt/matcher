@@ -130,3 +130,13 @@ module.exports.createRecon = (req, res) => {
       });
   }
 };
+
+module.exports.deleteRecon = ({ params: { id } }, res) => {
+  Reconciliation.remove({ _id: id })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+};

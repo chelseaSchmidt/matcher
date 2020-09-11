@@ -43,3 +43,16 @@ export const updateCutoff = (id, type, next, isCutoff) => {
       next(err);
     });
 };
+
+export const deleteRecon = (id, next) => {
+  axios({
+    method: 'delete',
+    url: `/recons/${id}`,
+  })
+    .then(({ data }) => {
+      next(null, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};

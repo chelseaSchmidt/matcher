@@ -11,6 +11,11 @@
   align-items: center;
 }
 
+.list-row {
+  display: flex;
+  flex-direction: row;
+}
+
 #list-btn-area {
   display: flex;
   flex-direction: row;
@@ -27,7 +32,15 @@
   margin: 2px;
 }
 
-.saved-recon-btn:hover {
+.delete-btn {
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.saved-recon-btn:hover, .delete-btn:hover {
   background-color: #ddd;
   color: #111;
 }
